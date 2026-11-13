@@ -1,37 +1,7 @@
-export const dynamic = "force-dynamic";
+import PostsList from "@/components/PostsList";
+import MarqueeSection from "@/components/MarqueeSection";
 
-import { supabase } from "@/lib/supabase";
-import PostSection from "@/components/PostSection";
-
-type Post = {
-  id: string;
-  title: string | null;
-  body: string;
-  image_urls: string[] | null;
-};
-
-async function getPosts(): Promise<Post[]> {
-  try {
-    const { data, error } = await supabase
-      .from("posts")
-      .select("id, title, body, image_urls")
-      .eq("published", true)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Failed to load posts:", error.message);
-      return [];
-    }
-    return (data as Post[]) ?? [];
-  } catch (e) {
-    console.error("Supabase not configured:", e);
-    return [];
-  }
-}
-
-export default async function Home() {
-  const posts = await getPosts();
-
+export default function Home() {
   return (
     <main className="min-h-screen bg-[#0b0b0c] text-white">
       <section className="relative w-full overflow-hidden bg-[#0b0b0c]">
@@ -84,14 +54,10 @@ export default async function Home() {
         </div>
       </section>
 
+      <MarqueeSection />
+
       <section className="py-8">
-        {posts.length === 0 ? (
-          <div className="mx-auto max-w-4xl px-6 py-12 text-center text-[#464847]">
-            <p>No content has been published yet. Check back soon.</p>
-          </div>
-        ) : (
-          posts.map((post) => <PostSection key={post.id} post={post} />)
-        )}
+        <PostsList />
       </section>
 
       {/* Location map */}

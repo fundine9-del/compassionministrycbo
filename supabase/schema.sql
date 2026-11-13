@@ -99,6 +99,47 @@ create policy "Admins can update users"
   using (public.is_admin())
   with check (public.is_admin());
 
+-- Marquee images table
+create table if not exists public.marque (
+  id uuid primary key default gen_random_uuid(),
+  image_url text not null,
+  caption text,
+  sort_order int default 0,
+  published boolean default true,
+  created_at timestamptz default now()
+);
+
+alter table public.marque enable row level security;
+
+create policy "Public can read published marque"
+  on public.marque for select
+  using (published = true);
+
+create policy "Admins can manage marque"
+  on public.marque for all
+  to authenticated
+  using (public.is_admin())
+  with check (public.is_admin());
+
+-- Storage bucket for marque images
+insert into storage.buckets (id, name, public)
+values ('marque-images', 'marque-images', true)
+on conflict (id) do nothing;
+
+create policy "Public read marque images"
+  on storage.objects for select
+  using (bucket_id = 'marque-images');
+
+create policy "Admins upload marque images"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'marque-images' and public.is_admin());
+
+create policy "Admins delete marque images"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'marque-images' and public.is_admin());
+
 -- Storage bucket for content images
 insert into storage.buckets (id, name, public)
 values ('content-images', 'content-images', true)

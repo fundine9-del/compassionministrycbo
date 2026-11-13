@@ -53,10 +53,10 @@ export default function DonatePage() {
             <p className="text-[#010101]">Account Name: Compassion Ministry CBO</p>
           </div>
           <div className="bg-[#fffce6] rounded-xl p-6 border border-[#af9e73]">
-            <h3 className="text-xl font-bold text-[#9a3f2c] mb-2">Bank Transfer</h3>
-            <p className="text-[#010101]">Bank: Your Bank Name</p>
-            <p className="text-[#010101]">Account Name: Compassion Ministry CBO</p>
-            <p className="text-[#010101]">Account Number: 0000000000</p>
+            <h3 className="text-xl font-bold text-[#9a3f2c] mb-2">Send Money</h3>
+            <p className="text-[#010101]">Send money to:</p>
+            <p className="text-[#010101] font-semibold">0724727715</p>
+            <p className="text-[#010101]">Compassion Ministry CBO</p>
           </div>
         </div>
 
